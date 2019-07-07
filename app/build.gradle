@@ -13,10 +13,42 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        debug {
+            storeFile file('../debug.keystore')
+        }
+        release {
+            storeFile file('../release.keystore')
+            storePassword "12345678"
+            keyAlias "miniMercari"
+            keyPassword "12345678"
+        }
+    }
+    flavorDimensions "mode"
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ['debug', 'release']
+            multiDexKeepFile file('multidex-config.txt')
+        }
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ['debug', 'release']
+        }
+    }
+    productFlavors {
+        full {
+            dimension 'mode'
+            ndk {
+                abiFilters "armeabi-v7a"
+                abiFilters "arm64-v8a"
+            }
         }
     }
     dataBinding {
