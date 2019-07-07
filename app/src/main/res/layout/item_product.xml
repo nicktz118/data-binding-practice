@@ -1,105 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/verticalMiddleGuideline"
-        android:layout_width="wrap_content"
+    <data>
+
+        <variable
+            name="product"
+            type="com.nicktz.minimercari.data.Product" />
+
+        <variable
+            name="clickEvent"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.5"
-        android:orientation="vertical" />
+        android:background="@drawable/bg_product"
+        android:onClick="@{clickEvent}">
 
-    <ImageView
-        android:id="@+id/productImageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@color/colorPrimaryDark"
-        app:layout_constraintDimensionRatio="W, 1:1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalMiddleGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-    <ImageView
-        android:id="@+id/soldOutImageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="W, 11:19"
-        android:src="@drawable/badge_soldout"
-        app:layout_constraintStart_toStartOf="@id/productImageView"
-        app:layout_constraintEnd_toEndOf="@id/verticalMiddleGuideline"
-        app:layout_constraintTop_toTopOf="@id/productImageView"/>
+        <ImageView
+            android:id="@+id/productImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@color/colorPrimaryDark"
+            app:layout_constraintDimensionRatio="W, 1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:imageUrl="@{product.photoUrl}"/>
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="@id/productImageView"
-        app:layout_constraintBottom_toBottomOf="@id/productImageView"
-        app:layout_constraintEnd_toEndOf="@+id/productImageView"
-        tools:text="Vinyl Record "
-        />
+        <ImageView
+            android:id="@+id/soldOutImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/badge_soldout"
+            app:layout_constraintDimensionRatio="W, 11:19"
+            app:layout_constraintEnd_toEndOf="@id/verticalMiddleGuideline"
+            app:layout_constraintStart_toStartOf="@id/productImageView"
+            app:layout_constraintTop_toTopOf="@id/productImageView"
+            app:soldOutLabelVisibility="@{product.status}"/>
 
-    <TextView
-        android:id="@+id/likesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constrainedWidth="true"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:drawableStart="@drawable/icon_like"
-        android:drawablePadding="3dp"
-        android:gravity="center"
-        android:layout_marginTop="5dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@id/nameTextView"
-        app:layout_constraintTop_toBottomOf="@id/productImageView"
-        app:layout_constraintEnd_toStartOf="@id/commentsTextView"
-        tools:text="123445"
-        />
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/productImageView"
+            app:layout_constraintEnd_toEndOf="@+id/productImageView"
+            app:layout_constraintStart_toStartOf="@id/productImageView"
+            android:text="@{product.name}"
+            tools:text="Vinyl Record " />
 
-    <TextView
-        android:id="@+id/commentsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constrainedWidth="true"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:drawableStart="@drawable/icon_comment"
-        android:drawablePadding="3dp"
-        android:layout_marginStart="5dp"
-        android:gravity="center"
-        app:layout_constraintStart_toEndOf="@id/likesTextView"
-        app:layout_constraintTop_toTopOf="@id/likesTextView"
-        app:layout_constraintEnd_toEndOf="@id/verticalMiddleGuideline"
-        tools:text="123"
-        />
+        <TextView
+            android:id="@+id/likesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:drawableStart="@drawable/icon_like"
+            android:drawablePadding="3dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@id/commentsTextView"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/nameTextView"
+            app:layout_constraintTop_toBottomOf="@id/productImageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@{String.valueOf(product.likesNum)}"
+            tools:text="123445" />
 
-    <TextView
-        android:id="@+id/priceTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:gravity="end"
-        app:layout_constraintTop_toTopOf="@id/likesTextView"
-        app:layout_constraintStart_toStartOf="@id/verticalMiddleGuideline"
-        app:layout_constraintEnd_toEndOf="@id/nameTextView"
-        tools:text="$ 123"
-        />
+        <TextView
+            android:id="@+id/commentsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:drawableStart="@drawable/icon_comment"
+            android:drawablePadding="3dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@id/verticalMiddleGuideline"
+            app:layout_constraintStart_toEndOf="@id/likesTextView"
+            app:layout_constraintTop_toTopOf="@id/likesTextView"
+            android:text="@{String.valueOf(product.commentsNum)}"
+            tools:text="123" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@id/nameTextView"
+            app:layout_constraintStart_toStartOf="@id/verticalMiddleGuideline"
+            app:layout_constraintTop_toTopOf="@id/likesTextView"
+            android:text="@{@string/price_prefix(product.price)}"
+            tools:text="$ 123" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

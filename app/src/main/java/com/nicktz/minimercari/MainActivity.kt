@@ -1,39 +1,51 @@
 package com.nicktz.minimercari
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.nicktz.minimercari.data.ProductTab
+import com.nicktz.minimercari.products.ProductsFragment
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModel()
+
+    private val pagerAdapter by lazy {
+        GeneralPagerAdapter(supportFragmentManager)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Launch Camera", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        viewModel.tabs.observe(this, Observer(::setupViewPager))
+
+        viewModel.error.observe(this,
+            Observer {
+                viewPager.visibility = View.GONE
+                errorTextView.visibility = View.VISIBLE
+            })
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    private fun setupViewPager(tabs: List<ProductTab>) {
+        errorTextView.visibility = View.GONE
+        viewPager.visibility = View.VISIBLE
+        tabs.forEach { tab ->
+           pagerAdapter.addFrag(ProductsFragment.newInstance(tab), tab.name)
         }
+        viewPager.adapter = pagerAdapter
+        tabLayout.setupWithViewPager(viewPager)
     }
 }
